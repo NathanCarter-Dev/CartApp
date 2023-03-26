@@ -11,6 +11,7 @@ import Stack from '@mui/material/Stack';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import Grow from '@mui/material/Grow';
+import { List } from "@mui/material";
 
 const style = {
   position: 'absolute',
@@ -44,7 +45,10 @@ const CartModal = (props) => {
           <Box className="Cart-Item">
             {cartCtx.isActive &&
             <>
+            
+            <List sx={{display: 'flex', alignItems: 'center', borderBottom: '1px solid black'}}>
             <CartList key={item.id} data={item}/> 
+            </List>
             </> 
             }
             </Box>
@@ -58,7 +62,7 @@ const CartModal = (props) => {
             <Button onClick={cartCtx.toggleActive} variant="outlined" startIcon={<CloseIcon />}>
               Close
             </Button>
-            <Button onClick={cartCtx.order} sx={{backgroundColor:'#99391f'}} color='error'  variant="contained" endIcon={<SendIcon />}>
+            <Button onClick={() => {if(cartCtx.items.length > 0) cartCtx.order()}} sx={{backgroundColor:'#99391f'}} color='error'  variant="contained" endIcon={<SendIcon />}>
               Order
             </Button>
          </Stack>

@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext, useState, useEffect, useReducer} from "react";
 import UseToggleState from "../hooks/UseToggleState";
 
 export const CartContext = React.createContext(
@@ -17,9 +17,39 @@ export const CartContext = React.createContext(
   )
 
 export const CartContextProvider = (props) => {
+
+  const totalStateReducer = (state, action) => {
+    const meal = action.payload
+    switch (action.type) {
+      case 'ADD': 
+
+      const includesAdd = items.filter((item) => item.id === meal.id)
+        includesAdd.length > 0 
+        ? setItems(items.map((item) => {
+          if(item.id === meal.id) {
+            return {...item, qty: item.qty + meal.qty}} 
+            else return item})) 
+        : setItems([...items, meal])
+      break
+      case 'MINUS':
+        const includesMinus = items.filter((item) => item.id === meal.id)
+        includesMinus.length > 0 
+        ? setItems(items.map((item) => { 
+    
+          if(item.qty < 2) return {...item, qty: 1}
+    
+          if(item.id === meal.id) {
+            return {...item, qty: item.qty - 1}} 
+            else return item})) 
+        : setItems([...items, meal])
+      break
+    }
+  }
+
   const [items, setItems] = useState(JSON.parse(window.localStorage.getItem('items')) || [])
   let [total, setTotal] = useState(0)
   const [isActive, toggleActive] = UseToggleState(false)
+  const [totalState, dispatchTotal] = useReducer(totalStateReducer, 0)
   
 
   useEffect(() => {
@@ -31,30 +61,11 @@ export const CartContextProvider = (props) => {
   }, [items, total])
 
   const addItem = (meal) => {
-
-    const includes = items.filter((item) => item.id === meal.id)
-    includes.length > 0 
-    ? setItems(items.map((item) => {
-      if(item.id === meal.id) {
-        return {...item, qty: item.qty + meal.qty}} 
-        else return item})) 
-    : setItems([...items, meal])
-  
+    dispatchTotal({type: 'ADD', payload: meal})
   }
 
   const minusItem = (meal) => {
-
-    const includes = items.filter((item) => item.id === meal.id)
-    includes.length > 0 
-    ? setItems(items.map((item) => { 
-
-      if(item.qty < 2) return {...item, qty: 1}
-
-      if(item.id === meal.id) {
-        return {...item, qty: item.qty - 1}} 
-        else return item})) 
-    : setItems([...items, meal])
-      
+    dispatchTotal({type: 'MINUS', payload: meal})
   }
 
   const deleteItem = (data) => {

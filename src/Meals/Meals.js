@@ -10,7 +10,7 @@ const Meals = ({meals, addQty, setAddQty}) => {
     <Container sx={{marginTop: '6.5rem'}}>
     <Paper elevation={5}>
     <List>
-    {meals.map((meal) => <ListItem sx={{}}><Meal key={uuidv4()} mealProps={meal} addQty={addQty} setAddQty={setAddQty}/></ListItem>)}
+    {meals.map((meal) => <ListItem key={meal.id} sx={{}}><Meal key={uuidv4()} mealProps={meal} addQty={addQty} setAddQty={setAddQty}/></ListItem>)}
     </List>
     </Paper>
     </Container>

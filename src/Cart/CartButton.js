@@ -9,10 +9,10 @@ const CartButton = () => {
   console.log(qty)
   return(
     <>
-    <Card sx={{width:'200px',maxHeight: '50px', textAlign: 'center', backgroundColor: '#9f391f'}}>
+    <Card sx={{width:'162px',maxHeight: '50px', textAlign: 'center', backgroundColor: '#9f391f'}}>
     <IconButton  onClick={cartCtx.toggleActive}>
     <ShoppingCartIcon />
-    <Typography  variant="h2" component='p'/>Your Cart<Typography/>
+    <Typography  variant="h3" component='p'/>Your Cart<Typography/>
     <Typography marginLeft='.5rem' variant="p" component='p'/>{qty}<Typography/>
     </IconButton>
     
